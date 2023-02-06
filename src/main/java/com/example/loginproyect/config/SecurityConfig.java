@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
+    @Bean //Usuarios en memoria
     public InMemoryUserDetailsManager userDetailsService() {
         UserDetails user1 = User.withUsername("user1")
                 .password(passwordEncoder().encode("password"))
@@ -74,24 +74,24 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-//        return http
-//                .csrf(crsf -> crsf.disable()) //Seguridad contra ataques
-//                .formLogin(Customizer.withDefaults())
-////                .formLogin(form -> form
-////                        .loginPage("/login")
-////                        .loginProcessingUrl("/login")
-////                        .defaultSuccessUrl("/home", true)
-////                        .failureForwardUrl("/login?error=true")
-////                        .permitAll())
-//                .authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers("/login").permitAll();
-//                    auth.requestMatchers("/user").hasRole("USER"); //Si tiene dicho rango, saldra una o otra
-//                    auth.requestMatchers("/admin").hasRole("ADMIN");
-//                })
-//                .build();
-//    }
+    @Bean
+    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+        return http
+                .csrf(crsf -> crsf.disable()) //Seguridad contra ataques
+                .formLogin(Customizer.withDefaults())
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .loginProcessingUrl("/login")
+//                        .defaultSuccessUrl("/home", true)
+//                        .failureForwardUrl("/login?error=true")
+//                        .permitAll())
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/user").hasRole("USER");
+                    auth.requestMatchers("/admin").hasRole("ADMIN");
+                })
+                .build();
+    }
 
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
